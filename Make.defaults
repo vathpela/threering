@@ -1,0 +1,27 @@
+
+
+bindir ?= /usr/bin/
+CC = $(bindir)gcc
+AS = $(bindir)as
+LD = $(bindir)ld
+AR = $(bindir)ar
+RANLIB = $(bindir)ranlib
+MAKE = $(bindir)make
+
+ARCH := $(shell uname -m | sed s,i[3456789]86,ia32,)
+CFLAGS = -Wall -Werror -Wsign-compare -ggdb -O0 -fshort-wchar -fPIC -std=gnu99
+LDFLAGS =
+INSTALL = install
+
+INSTALLROOT ?= $(DESTDIR)
+PREFIX := /usr
+
+cflags = $(shell pkg-config --cflags $(1))
+ldflags = $(shell pkg-config --libs $(1))
+
+ifeq ($(ARCH), x86_64)
+	LIBDIR ?= $(PREFIX)/lib64
+endif
+INCDIR ?= $(PREFIX)/include
+LIBDIR ?= $(PREFIX)/lib
+PCDIR ?= $(LIBDIR)/pkgconfig/
