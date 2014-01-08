@@ -2,13 +2,13 @@ TOPDIR = $(shell echo $$PWD)
 
 include $(TOPDIR)/Make.defaults
 
-SUBDIRS = lib
+SUBDIRS = include lib python
 VERSION = 0.1
 
 all : $(SUBDIRS)
 
 $(SUBDIRS) :
-	$(MAKE) -C $@ TOPDIR=$(TOPDIR) SRCDIR=$(TOPDIR)/$@/ ARCH=$(ARCH)
+	$(MAKE) -C $@ TOPDIR=$(TOPDIR) SRCDIR=$(TOPDIR)/$@/ ARCH=$(ARCH) VERSION=$(VERSION)
 
 clean :
 	@for x in $(SUBDIRS) ; do $(MAKE) -C $${x} TOPDIR=$(TOPDIR) SRCDIR=$(TOPDIR)/$$x/ ARCH=$(ARCH) $@ ; done

@@ -12,7 +12,7 @@ threering.pc : threering.pc.in
 	    -e "s,@@LIBDIR@@,$(libdir),g" \
 		$^ > $@
 
-libthreering.o : threering.h ../include/threering.h util.h
+libthreering.o :: threering.h ../include/threering.h
 
 include $(TOPDIR)/Make.rules
 
