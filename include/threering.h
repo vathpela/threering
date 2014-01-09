@@ -19,4 +19,12 @@
 #ifndef THREERING_H
 #define THREERING_H 1
 
+typedef struct tr_context tr_context;
+typedef struct tr_dso tr_dso;
+
+extern size_t tr_context_size(void);
+extern int tr_context_init(tr_context *ctx);
+extern void tr_context_fini(tr_context *ctx);
+extern tr_dso *tr_find_module(tr_context *ctx, const char const *name);
+
 #endif /* THREERING_H */

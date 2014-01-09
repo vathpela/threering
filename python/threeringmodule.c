@@ -21,14 +21,65 @@
 
 #include <threering.h>
 
+typedef struct {
+	PyObject_HEAD
+	tr_dso *dso;
+} PyThreeRingObject;
+
+static PyObject *
+tr_load(PyObject *self, PyObject *args, PyObject *kwds)
+{
+	char *name = NULL;
+	char *kwlist[] = {"dso", NULL};
+	//tr_dso *dso = NULL;
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "s:dso", kwlist, &name))
+		return NULL;
+
+	//dso = tr_find_module(tr_ctx, name);
+	
+	return NULL;
+}
+
+static PyMethodDef tr_functions[] = {
+	{"load", (PyCFunction)tr_load, METH_VARARGS|METH_KEYWORDS,
+		"Loads a dso, returns an module" },
+	{NULL, NULL}
+};
+
+static void
+tr_free(void *ptr)
+{
+	PyObject *m = (PyObject *)ptr;
+	tr_context *tr_ctx = PyModule_GetState(m);
+
+	tr_context_fini(tr_ctx);
+	return;
+}
+
+PyModuleDef md = {
+	.m_base = PyModuleDef_HEAD_INIT,
+	.m_name = "threering",
+	.m_doc = "",
+	.m_size = -1,
+	.m_methods = tr_functions,
+	.m_reload = NULL,
+	.m_traverse = NULL,
+	.m_clear = NULL,
+	.m_free = tr_free,
+	};
+
 PyMODINIT_FUNC
-initthreering(void)
+PyInit_threering(void)
 {
 	PyObject *m;
 
-	m = Py_InitModule("threering", NULL);
+	md.m_size = tr_context_size(),
 
-	/* these are just here to molify the compiler */
-	Py_INCREF(m);
-	Py_DECREF(m);
+	m = PyModule_Create(&md);
+	tr_context *tr_ctx = PyModule_GetState(m);
+
+	tr_context_init(tr_ctx);
+
+	return m;
 }

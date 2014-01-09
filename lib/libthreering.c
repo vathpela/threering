@@ -17,11 +17,33 @@
  * Author(s): Peter Jones <pjones@redhat.com>
  */
 
+#include <stdlib.h>
+#include <string.h>
+
 #include <threering.h>
 #include "threering.h"
 
-int
-entry(void)
+size_t
+tr_context_size(void)
 {
+	return sizeof (tr_context);
+}
+
+int
+tr_context_init(tr_context *ctx)
+{
+	memset(ctx, '\0', sizeof (*ctx));
 	return 0;
+}
+
+void
+tr_context_fini(tr_context *ctx)
+{
+	memset(ctx, '\0', sizeof (*ctx));
+}
+
+tr_dso *
+tr_find_module(tr_context *ctx, const char const *name)
+{
+	return NULL;
 }

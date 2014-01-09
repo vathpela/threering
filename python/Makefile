@@ -1,20 +1,19 @@
 LIBTARGETS = threeringmodule.so
 TARGETS = $(LIBTARGETS)
 TOPDIR ?= ..
-PYVER = $(shell python -c "import sys; print sys.version[0:3]")
-PYINC = -I/usr/include/python$(PYVER)
-
+PYCFLAGS = $(shell python3-config --cflags)
+PYLDLAGS = $(shell python3-config --ldlags)
 
 include $(TOPDIR)/Make.defaults
 
 all : $(TARGETS)
 
 threeringmodule.so.$(VERSION) : threeringmodule.o
-	$(CC) $(CFLAGS) $(LDFLAGS) \
+	$(CC) $(CFLAGS) $(PYLDFLAGS) $(LDFLAGS) \
 		-Wl,-soname="$@" -o $@ $^ -L$(TOPDIR)/lib -lthreering
 
 threeringmodule.o : threeringmodule.c
-	$(CC) $(CFLAGS) -I$(TOPDIR)/include $(PYINC) -c -o $@ $(filter %.c,$^)
+	$(CC) $(CFLAGS) $(PYCFLAGS) -c -o $@ $(filter %.c,$^)
 
 %.so : %.so.$(VERSION)
 	@echo -n

@@ -19,4 +19,12 @@
 #ifndef THREERING_PRIVATE_H
 #define THREERING_PRIVATE_H 1
 
+struct tr_context {
+	int hello;
+};
+
+struct tr_dso {
+	int fd;
+};
+
 #endif /* THREERING_PRIVATE_H */

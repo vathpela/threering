@@ -10,7 +10,7 @@ MAKE = $(bindir)make
 
 ARCH := $(shell uname -m | sed s,i[3456789]86,ia32,)
 CFLAGS = -Wall -Werror -Wsign-compare -ggdb -O0 -fshort-wchar -fPIC -std=gnu99 \
-	-I$(TOPDIR)/include
+	-I$(TOPDIR)/include -Wno-unused
 LDFLAGS = -shared -L$(TOPDIR)/lib
 INSTALL = install
 
