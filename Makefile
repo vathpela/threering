@@ -2,7 +2,7 @@ TOPDIR = $(shell echo $$PWD)
 
 include $(TOPDIR)/Make.defaults
 
-SUBDIRS = include lib python
+SUBDIRS = include lib python3
 VERSION = 0.1
 
 all : $(SUBDIRS)
