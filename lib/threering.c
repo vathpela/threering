@@ -58,9 +58,6 @@ tr_find_module(tr_context *ctx, const char const *name)
 	 * 2) find the original file the dl handle is to
 	 * 3) fish build id out of #2
 	 * 4) find debuginfo based on build id
-	 * 5) construct dso object
-	 * 5.a) construct type objects
-	 * 5.b) construct call functions
 	 */
 	/* #1 dl handle */
 	dso->dl_handle = dlopen(name, RTLD_NOW|RTLD_LOCAL);
@@ -77,6 +74,7 @@ tr_find_module(tr_context *ctx, const char const *name)
 	if (rc < 0)
 		goto err;
 
+	/* build our debuginfo filename */
 	char *filename = malloc(dso->build_id_size * 2);
 	for (size_t i = 1; i < dso->build_id_size; i++)
 		sprintf(filename + i*2 -2, "%02x", dso->build_id[i]);
