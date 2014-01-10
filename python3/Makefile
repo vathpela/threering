@@ -12,13 +12,10 @@ all : $(TARGETS)
 
 VERSION = 0.1
 
-threering$(PYEXT) : threering.o
-	$(CC) $(CFLAGS) $(PYLDFLAGS) $(LDFLAGS) \
+threering$(PYEXT) : threering.c dso.c
+	$(CC) $(CFLAGS) $(PYCFLAGS) $(PYLDFLAGS) $(LDFLAGS) \
 		-Wl,-soname="$@.$(VERSION)" \
 		-o $@ $^ -L$(TOPDIR)/lib -lthreering
-
-threering.o : threering.c
-	$(CC) $(CFLAGS) $(PYCFLAGS) -c -o $@ $(filter %.c,$^)
 
 %.so : %.so.$(VERSION)
 	@echo -n

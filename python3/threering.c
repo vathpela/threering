@@ -18,26 +18,28 @@
  */
 
 #include <Python.h>
-
 #include <threering.h>
+#include "threering.h"
 
-typedef struct {
-	PyObject_HEAD
-	tr_dso *dso;
-} PyThreeRingObject;
+static tr_context *tr_ctx;
 
 static PyObject *
 tr_load(PyObject *self, PyObject *args, PyObject *kwds)
 {
 	char *name = NULL;
 	char *kwlist[] = {"dso", NULL};
-	//tr_dso *dso = NULL;
+	tr_dso *dso = NULL;
+	PyDsoObject *ptrdo = NULL;
 
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "s:dso", kwlist, &name))
 		return NULL;
 
-	//dso = tr_find_module(tr_ctx, name);
-	
+	dso = tr_find_module(tr_ctx, name);
+	if (!dso) {
+		PyErr_SetFromErrno(PyExc_OSError);
+		return NULL;
+	}
+
 	return NULL;
 }
 
@@ -77,9 +79,15 @@ PyInit_threering(void)
 	md.m_size = tr_context_size(),
 
 	m = PyModule_Create(&md);
-	tr_context *tr_ctx = PyModule_GetState(m);
+	tr_ctx = PyModule_GetState(m);
 
 	tr_context_init(tr_ctx);
+
+	Py_TYPE(&PyDsoType) = &PyType_Type;
+	if (PyType_Ready(&PyDsoType) < 0)
+		return NULL;
+
+	/* PJ TODO: add path object */
 
 	return m;
 }
