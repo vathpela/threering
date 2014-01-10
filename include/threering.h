@@ -19,6 +19,8 @@
 #ifndef THREERING_H
 #define THREERING_H 1
 
+#include <stdlib.h>
+
 typedef struct tr_context tr_context;
 typedef struct tr_dso tr_dso;
 

@@ -5,5 +5,5 @@
 %.E : %.c
 	$(CC) $(CFLAGS) -E -o $@ $(filter %.c,$^)
 
-%.so : %.o
+%.so :
 	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^
