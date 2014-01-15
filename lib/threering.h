@@ -29,11 +29,15 @@ struct tr_context {
 struct tr_dso {
 	void *dl_handle;
 	struct link_map *lm;
+
 	int fd;
 	Elf *elf;
+
 	uint8_t *build_id;
 	size_t build_id_size;
+
 	char *debuginfo_path;
+	int debuginfo_fd;
 };
 
 typedef struct tr_context tr_context;
